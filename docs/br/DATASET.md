@@ -1,17 +1,17 @@
 # Dataset — arquivos de referência
 
-Três arquivos são fornecidos aos participantes e são necessários para decidir se as transações são ou não fraudulentas.
+Nessa edição, você precisa de informações que estão em arquivos distribuídos nesse repositório.
 
 | Arquivo | Tamanho | Para quê |
 |---|---|---|
-| [`resources/references.json.gz`](/resources/references.json.gz) | ~1,6 MB (gzipado) / ~10 MB | 100.000 vetores rotulados — o "dicionário" que sua busca vetorial consulta. |
+| [`resources/references.json.gz`](/resources/references.json.gz) | ~16 MB (gzipado) / ~284 MB | 3.000.000 vetores rotulados que sua busca vetorial consulta. |
 | [`resources/mcc_risk.json`](/resources/mcc_risk.json) | <1 KB | Score de risco por MCC (categoria do comerciante). |
 | [`resources/normalization.json`](/resources/normalization.json) | <1 KB | Constantes para normalizar os campos do payload. |
 
 
 ## `references.json.gz` — vetores de referência rotulados
 
-O dataset principal contra o qual sua busca vetorial é executada. Cada registro tem dois campos: `vector` (14 dimensões na ordem definida em [REGRAS_DE_DETECCAO.md](./REGRAS_DE_DETECCAO.md)) e `label` (`"fraud"` ou `"legit"`).
+Esse é o dataset principal contra o qual sua busca vetorial é executada. Cada registro tem dois campos: `vector` (14 dimensões, na ordem definida em [REGRAS_DE_DETECCAO.md](./REGRAS_DE_DETECCAO.md)) e `label` (`"fraud"` ou `"legit"`).
 
 ```json
 [
@@ -20,18 +20,18 @@ O dataset principal contra o qual sua busca vetorial é executada. Cada registro
 ]
 ```
 
-**Por que vem gzipado?** O arquivo descomprimido tem ~10 MB; comprimido cai para ~1,6 MB. Distribuímos o `.gz` por economia de tamanho.
+**Por que vem gzipado.** Descomprimido, o arquivo tem ~284 MB; comprimido, ~16 MB. A distribuição é feita em `.gz` para economizar tamanho.
 
-**O valor sentinela `-1`.** Os índices `5` (`minutes_since_last_tx`) e `6` (`km_from_last_tx`) recebem `-1` quando a transação chega com `last_transaction: null` (não há transação anterior). Como `-1` está claramente fora do intervalo `0.0–1.0`, transações "sem histórico" naturalmente ficam próximas de outras "sem histórico" no espaço vetorial — o KNN agrupa as duas situações sem precisar de tratamento especial. Os vetores do dataset usam a mesma convenção, então **não filtre nem substitua** esses `-1`.
+**O valor sentinela `-1`.** Os índices `5` (`minutes_since_last_tx`) e `6` (`km_from_last_tx`) recebem `-1` quando a transação chega com `last_transaction: null` (ou seja, não existe transação anterior). Como `-1` está fora do intervalo `0.0–1.0`, transações sem histórico ficam naturalmente próximas de outras sem histórico no espaço vetorial — o KNN (k-vizinhos mais próximos) agrupa as duas situações sem precisar de tratamento especial. Os vetores do dataset seguem a mesma convenção, portanto **não filtre nem substitua** esses `-1`.
 
-**Para inspecionar.** O arquivo oficial é grande e desconfortável de abrir. Use [`resources/example-references.json`](/resources/example-references.json) — um recorte pequeno e descomprimido com o mesmo formato.
+**Para inspecionar o formato.** O arquivo oficial é grande. Você pode usar [`resources/example-references.json`](/resources/example-references.json) — um recorte pequeno e já descomprimido, com o mesmo formato.
 
 
 ## `mcc_risk.json` — score de risco por MCC
 
-Mapeia o MCC (Merchant Category Code, presente em `merchant.mcc` do payload) para um valor entre `0.0` (categoria segura) e `1.0` (categoria arriscada). É consumido diretamente pelo índice `12` (`mcc_risk`) do vetor.
+Esse arquivo mapeia o MCC (Merchant Category Code, presente em `merchant.mcc` do payload) para um valor entre `0.0` (categoria segura) e `1.0` (categoria arriscada). Ele alimenta diretamente o índice `12` (`mcc_risk`) do vetor.
 
-Conteúdo completo do arquivo:
+Conteúdo completo:
 
 ```json
 {
@@ -48,12 +48,12 @@ Conteúdo completo do arquivo:
 }
 ```
 
-**MCC não listado?** Use `0.5` como default. O payload pode trazer MCCs que não estão na tabela — isso é esperado.
+**Quando o MCC não está na tabela.** Use `0.5` como valor padrão. O payload pode trazer MCCs que não aparecem na tabela — isso é esperado.
 
 
 ## `normalization.json` — constantes de normalização
 
-As constantes usadas nas fórmulas de [REGRAS_DE_DETECCAO.md](./REGRAS_DE_DETECCAO.md). Conteúdo completo:
+Essas são as constantes usadas nas fórmulas de [REGRAS_DE_DETECCAO.md](./REGRAS_DE_DETECCAO.md). Conteúdo completo:
 
 ```json
 {
@@ -70,12 +70,12 @@ As constantes usadas nas fórmulas de [REGRAS_DE_DETECCAO.md](./REGRAS_DE_DETECC
 | Constante | Significado |
 |---|---|
 | `max_amount` | Teto para `transaction.amount`; valores acima de 10.000 são limitados a `1.0`. |
-| `max_installments` | Teto para `transaction.installments` (12 parcelas = `1.0`). |
-| `amount_vs_avg_ratio` | Divisor extra para a razão `amount / customer.avg_amount`; `10×` a média = `1.0`. |
-| `max_minutes` | Janela de tempo para `minutes_since_last_tx`; 1.440 min = 24h. |
+| `max_installments` | Teto para `transaction.installments` (12 parcelas equivalem a `1.0`). |
+| `amount_vs_avg_ratio` | Divisor da razão `amount / customer.avg_amount`; `10×` a média equivale a `1.0`. |
+| `max_minutes` | Janela de tempo para `minutes_since_last_tx`; 1.440 min correspondem a 24h. |
 | `max_km` | Teto de distância (km) para `km_from_home` e `km_from_last_tx`. |
 | `max_tx_count_24h` | Teto para `customer.tx_count_24h`; 20 transações ou mais nas últimas 24h são limitadas a `1.0`. |
 | `max_merchant_avg_amount` | Teto para o ticket médio do comerciante. |
 
 
-**Importante**: Os três arquivos não mudam durante o teste/edição — pode pré-processar à vontade (descomprimir, indexar, construir estruturas de busca (ex.: HNSW), converter para outro formato, etc.).
+**Importante.** Os três arquivos não mudam durante o teste, então você pode pré-processá-los à vontade — descomprimir, indexar, converter para outro formato, etc.

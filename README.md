@@ -1,20 +1,16 @@
-# Rinha de Backend 2026 – Fraud detection
+# Rinha de Backend 2026 – Fraud Detection
 
 ![cover](/misc/cover.png)
 
-🇧🇷 [Português](#-português) · 🇺🇸 [English](#-english)
+[Português](#português) · [English](#english)
 
-## SOFT LAUNCH
-
-| 🇧🇷 Português | 🇺🇸 English |
-|---|---|
-| Esta edição ainda não está 100% completa – ainda é um soft launch. Entretanto, se você encontrou esse repositório e já quiser ir desenvolvendo seu backend, fique à vontade! As regras não devem mudar muito em relação a edição final. | This edition is not 100% complete yet – it's still a soft launch. However, if you found this repository and already want to start developing your backend, feel free! The rules shouldn't change much compared to the final edition. |
+### Official Ranking Preview @ [rinhadebackend.com.br](https://rinhadebackend.com.br/)
 
 ---
 
-## 🇧🇷 Português
+## Português
 
-A **Rinha de Backend** é uma competição amistosa em que desenvolvedores constroem backends sob restrições agressivas de CPU e memória. Cada edição traz um tema diferente — e o desta vez é **detecção de fraude em transações de cartão usando busca vetorial**.
+A **Rinha de Backend** é uma competição amistosa em que você constrói um backend sob restrições de CPU, memória, e arquitetura. Cada edição traz um tema diferente – e o desta vez é **detecção de fraudes usando busca vetorial**.
 
 **Documentação completa do desafio:** [**docs/br/README.md**](./docs/br/README.md)
 
@@ -24,11 +20,18 @@ A **Rinha de Backend** é uma competição amistosa em que desenvolvedores const
 - [**2024** — Crébitos (controle de concorrência)](https://github.com/zanfranceschi/rinha-de-backend-2024-q1)
 - [**2023** — CRUD de Pessoas](https://github.com/zanfranceschi/rinha-de-backend-2023-q3)
 
+### Redes sociais
+- [Website Oficial](https://rinhadebackend.com.br/)
+- [Discord](https://discord.gg/Eca6gJba8R)
+- [X / Twitter](https://x.com/rinhadebackend)
+- [LinkedIn](https://www.linkedin.com/company/108194083)
+- [Bluesky](https://bsky.app/profile/rinhadebackend.bsky.social)
+
 ---
 
-## 🇺🇸 English
+## English
 
-**Rinha de Backend** ("Backend Brawl") is a friendly competition in which developers build backends under tight CPU and memory constraints. Each edition has a different theme — this one is **credit card fraud detection using vector search**.
+**Rinha de Backend** is a friendly competition where you build a backend under CPU, memory, and architecture constraints. Each edition has a different theme – this one is **fraud detection using vector search**.
 
 **Full challenge documentation:** [**docs/en/README.md**](./docs/en/README.md)
 
@@ -37,3 +40,11 @@ A **Rinha de Backend** é uma competição amistosa em que desenvolvedores const
 - [**2025** — Payment Processor](https://github.com/zanfranceschi/rinha-de-backend-2025)
 - [**2024** — Crébitos (concurrency control)](https://github.com/zanfranceschi/rinha-de-backend-2024-q1)
 - [**2023** — People CRUD](https://github.com/zanfranceschi/rinha-de-backend-2023-q3)
+
+### Social media
+
+- [Official Website](https://rinhadebackend.com.br/)
+- [Discord](https://discord.gg/Eca6gJba8R)
+- [X / Twitter](https://x.com/rinhadebackend)
+- [LinkedIn](https://www.linkedin.com/company/108194083)
+- [Bluesky](https://bsky.app/profile/rinhadebackend.bsky.social)
